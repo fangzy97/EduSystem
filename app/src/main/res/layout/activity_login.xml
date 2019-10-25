@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.lepetit.edu.activity.LoginActivity">
+
+    <EditText
+        android:id="@+id/userName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/password"
+        android:layout_margin="5dp"
+        android:ems="10"
+        android:hint="@string/userName"
+        android:inputType="number"
+        android:textCursorDrawable="@color/colorBar"
+        android:theme="@style/EditTextTheme" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="5dp"
+        android:ems="10"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:textCursorDrawable="@color/colorBar"
+        android:theme="@style/EditTextTheme" />
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/password"
+        android:layout_margin="5dp"
+        android:text="@string/loginText" />
+
+</RelativeLayout>

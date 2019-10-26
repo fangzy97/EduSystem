@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.lepetit.edu.R;
 import com.lepetit.edu.application.MyApplication;
-import com.lepetit.edu.util.LoginUtil;
+import com.lepetit.edu.controller.LoginController;
 
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.ButterKnife;
@@ -33,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
         String password = preferences.getString("Password", "");
 
         if (isHaveLoginInfo(userName, password)) {
-            LoginUtil loginUtil = new LoginUtil(userName, password);
-            loginUtil.startLogin();
+            LoginController loginController = new LoginController(userName, password);
+            loginController.startLogin();
         } else {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivityForResult(intent, LOGIN_REQUEST);

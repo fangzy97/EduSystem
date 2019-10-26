@@ -6,8 +6,8 @@ import android.widget.Toast;
 
 import com.lepetit.edu.R;
 import com.lepetit.edu.application.MyApplication;
-import com.lepetit.edu.util.LoadingDialogUtil;
-import com.lepetit.edu.util.LoginUtil;
+import com.lepetit.edu.controller.LoadingDialogController;
+import com.lepetit.edu.controller.LoginController;
 
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
@@ -23,7 +23,7 @@ public class LoginActivity extends AppCompatActivity {
     private String userName;
     private String password;
 
-    private LoadingDialogUtil dialogUtil = new LoadingDialogUtil(this);
+    private LoadingDialogController dialogUtil = new LoadingDialogController(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +40,8 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(MyApplication.getContext(), "用户名或密码不能为空", Toast.LENGTH_SHORT).show();
         } else {
             dialogUtil.display();
-            LoginUtil loginUtil = new LoginUtil(userName, password, this);
-            loginUtil.startLogin();
+            LoginController loginController = new LoginController(userName, password, this);
+            loginController.startLogin();
         }
     }
 

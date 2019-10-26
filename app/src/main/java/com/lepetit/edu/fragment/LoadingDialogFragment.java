@@ -1,4 +1,4 @@
-package com.lepetit.edu.dialog;
+package com.lepetit.edu.fragment;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -13,9 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-public class LoadingDialog extends DialogFragment {
-
-    static boolean isAdd;
+public class LoadingDialogFragment extends DialogFragment {
 
     @Nullable
     @Override
@@ -27,6 +25,5 @@ public class LoadingDialog extends DialogFragment {
     @Override
     public void onCancel(@NonNull DialogInterface dialog) {
         super.onCancel(dialog);
-        isAdd = false;
     }
 }

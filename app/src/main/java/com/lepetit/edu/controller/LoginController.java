@@ -1,13 +1,16 @@
-package com.lepetit.edu.util;
+package com.lepetit.edu.controller;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.lepetit.edu.activity.LoginActivity;
 import com.lepetit.edu.application.MyApplication;
+import com.lepetit.edu.util.OKHttpUtil;
+import com.lepetit.edu.util.StringUtil;
 
 import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
@@ -22,7 +25,7 @@ import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.Response;
 
-public class LoginUtil {
+public class LoginController {
     private final int GET_LT_SUCCESS = 1;
     private final int GET_LT_FAILED = -1;
     private final int LOGIN_SUCCESS = 2;
@@ -33,13 +36,13 @@ public class LoginUtil {
     private final String password;
     private String lt;
 
-    public LoginUtil(String userName, String password) {
+    public LoginController(String userName, String password) {
         this.userName = userName;
         this.password = password;
         this.loginActivity = null;
     }
 
-    public LoginUtil(String userName, String password, LoginActivity loginActivity) {
+    public LoginController(String userName, String password, LoginActivity loginActivity) {
         this.userName = userName;
         this.password = password;
         this.loginActivity = loginActivity;
@@ -70,10 +73,10 @@ public class LoginUtil {
     });
 
     public void startLogin() {
-        getLt();
+        getLtValue();
     }
 
-    private void getLt() {
+    private void getLtValue() {
         OKHttpUtil.getInstance().getAsync(StringUtil.loginUrl, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
@@ -117,18 +120,37 @@ public class LoginUtil {
             }
 
             @Override
-            public void onResponse(@NotNull Call call, @NotNull Response response) {
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 Message message = new Message();
-                message.what = LOGIN_SUCCESS;
+                if (isLoginSuccessful(response.body().string())) {
+                    message.what = LOGIN_SUCCESS;
+                } else {
+                    message.what = LOGIN_FAILED;
+                }
                 handler.sendMessage(message);
             }
         });
     }
 
+    /*
+    * 获取lt这个隐藏域的值
+    */
     private String getHiddenValue(String html) {
         Document document = Jsoup.parse(html);
         Element element = document.select("input[type=hidden]").first();
         return element.attr("value");
+    }
+
+    /*
+    * 用于判断登录是否成功
+    * 若成功登录，在跳转后的页面上能找到username这个字段，返回true
+    * 否则返回false
+    */
+    private boolean isLoginSuccessful(String html) {
+        Log.d(html, "jump_page");
+        Document document = Jsoup.parse(html);
+        Element element = document.getElementById("username");
+        return element != null;
     }
 
     /*

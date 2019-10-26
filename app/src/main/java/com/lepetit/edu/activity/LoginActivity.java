@@ -6,7 +6,6 @@ import android.widget.Toast;
 
 import com.lepetit.edu.R;
 import com.lepetit.edu.application.MyApplication;
-import com.lepetit.edu.controller.LoadingDialogController;
 import com.lepetit.edu.controller.LoginController;
 
 import butterknife.BindView;
@@ -21,8 +20,6 @@ public class LoginActivity extends BaseActivity {
 
     private String userName;
     private String password;
-
-    private LoadingDialogController dialogController = new LoadingDialogController(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

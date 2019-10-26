@@ -5,12 +5,10 @@ import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.lepetit.edu.activity.BaseActivity;
 import com.lepetit.edu.activity.LoginActivity;
 import com.lepetit.edu.application.MyApplication;
-import com.lepetit.edu.util.OKHttpUtil;
 import com.lepetit.edu.util.StringUtil;
 
 import org.jetbrains.annotations.NotNull;
@@ -26,7 +24,7 @@ import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.Response;
 
-public class LoginController {
+public class LoginController extends BaseController {
     private final int GET_LT_SUCCESS = 1;
     private final int GET_LT_FAILED = -1;
     private final int LOGIN_SUCCESS = 2;
@@ -70,12 +68,20 @@ public class LoginController {
         }
     });
 
+    /*
+    * 开始执行登录操作
+    */
     public void startLogin() {
+        super.newOKHttpUtilInstance();
         getLtValue();
     }
 
+    /*
+    * 登录提交的表单中有一个随机生成的lt
+    * 这里发送一个get请求获取页面中的lt值并保存cookie（OKHttp3自动管理）
+    */
     private void getLtValue() {
-        OKHttpUtil.getInstance().getAsync(StringUtil.loginUrl, new Callback() {
+        super.getOKHttpUtil().getAsync(StringUtil.loginUrl, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Message message = new Message();
@@ -97,6 +103,9 @@ public class LoginController {
         });
     }
 
+    /*
+    * 在获取到lt值之后将用户名和密码提交到教务处服务器
+    */
     private void loginToSystem() {
         FormBody formBody = new FormBody.Builder()
                 .add("username", userName)
@@ -112,7 +121,7 @@ public class LoginController {
                 .add("Referer", StringUtil.reference)
                 .build();
 
-        OKHttpUtil.getInstance().postAsync(StringUtil.loginUrl, formBody, headers, new Callback() {
+        super.getOKHttpUtil().postAsync(StringUtil.loginUrl, formBody, headers, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Message message = new Message();

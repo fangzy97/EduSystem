@@ -10,14 +10,10 @@ public class OKHttpUtil {
 
     private OkHttpClient client;
 
-    private OKHttpUtil() {
+    public OKHttpUtil() {
         client = new OkHttpClient.Builder()
                 .cookieJar(new CookiesUtil())
                 .build();
-    }
-
-    public static OKHttpUtil getInstance() {
-        return OKHttpUtilHolder.instance;
     }
 
     // 异步get请求
@@ -37,9 +33,5 @@ public class OKHttpUtil {
                 .post(body)
                 .build();
         client.newCall(request).enqueue(callback);
-    }
-
-    private static class OKHttpUtilHolder {
-        private static OKHttpUtil instance = new OKHttpUtil();
     }
 }

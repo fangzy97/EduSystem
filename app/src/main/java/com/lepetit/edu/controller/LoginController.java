@@ -7,6 +7,7 @@ import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.lepetit.edu.activity.BaseActivity;
 import com.lepetit.edu.activity.LoginActivity;
 import com.lepetit.edu.application.MyApplication;
 import com.lepetit.edu.util.OKHttpUtil;
@@ -31,21 +32,15 @@ public class LoginController {
     private final int LOGIN_SUCCESS = 2;
     private final int LOGIN_FAILED = -2;
 
-    private final LoginActivity loginActivity;
+    private final BaseActivity activity;
     private final String userName;
     private final String password;
     private String lt;
 
-    public LoginController(String userName, String password) {
+    public LoginController(String userName, String password, BaseActivity activity) {
         this.userName = userName;
         this.password = password;
-        this.loginActivity = null;
-    }
-
-    public LoginController(String userName, String password, LoginActivity loginActivity) {
-        this.userName = userName;
-        this.password = password;
-        this.loginActivity = loginActivity;
+        this.activity = activity;
     }
 
     private Handler handler = new Handler(new Handler.Callback() {
@@ -56,17 +51,19 @@ public class LoginController {
                     loginToSystem();
                     return true;
                 case GET_LT_FAILED:
-                    Toast.makeText(MyApplication.getContext(), "请连接到校园网后重试", Toast.LENGTH_SHORT).show();
-
+                    activity.displayToast("请连接到校园网后重试！");
+                    activity.removeDialog();
                     return false;
                 case LOGIN_SUCCESS:
-                    if (loginActivity != null) {
+                    activity.removeDialog();
+                    if (activity instanceof LoginActivity) {
                         storeUserInfo();
-                        loginActivity.backToMainActivity();
+                        ((LoginActivity)activity).backToMainActivity();
                     }
                     return true;
                 case LOGIN_FAILED:
-                    Toast.makeText(MyApplication.getContext(), "用户名或密码错误", Toast.LENGTH_SHORT).show();
+                    activity.displayToast("用户名或密码错误！");
+                    activity.removeDialog();
                     return false;
             }
             return false;

@@ -9,12 +9,11 @@ import com.lepetit.edu.application.MyApplication;
 import com.lepetit.edu.controller.LoadingDialogController;
 import com.lepetit.edu.controller.LoginController;
 
-import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
     @BindView(R.id.userName)
     EditText userNameText;
     @BindView(R.id.password)
@@ -39,14 +38,10 @@ public class LoginActivity extends AppCompatActivity {
         if (isUserInfoEmpty()) {
             Toast.makeText(MyApplication.getContext(), "用户名或密码不能为空", Toast.LENGTH_SHORT).show();
         } else {
-            dialogController.display();
+            displayDialog();
             LoginController loginController = new LoginController(userName, password, this);
             loginController.startLogin();
         }
-    }
-
-    public void removeDialog() {
-        dialogController.remove();
     }
 
     public void backToMainActivity() {

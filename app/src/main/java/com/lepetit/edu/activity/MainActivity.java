@@ -8,10 +8,9 @@ import com.lepetit.edu.R;
 import com.lepetit.edu.application.MyApplication;
 import com.lepetit.edu.controller.LoginController;
 
-import androidx.appcompat.app.AppCompatActivity;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     private final int LOGIN_REQUEST = 0;
 
     @Override
@@ -33,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         String password = preferences.getString("Password", "");
 
         if (isHaveLoginInfo(userName, password)) {
-            LoginController loginController = new LoginController(userName, password);
+            LoginController loginController = new LoginController(userName, password, this);
             loginController.startLogin();
         } else {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);

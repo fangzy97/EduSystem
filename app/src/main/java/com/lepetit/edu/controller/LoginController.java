@@ -57,6 +57,7 @@ public class LoginController {
                     return true;
                 case GET_LT_FAILED:
                     Toast.makeText(MyApplication.getContext(), "请连接到校园网后重试", Toast.LENGTH_SHORT).show();
+
                     return false;
                 case LOGIN_SUCCESS:
                     if (loginActivity != null) {
@@ -88,9 +89,12 @@ public class LoginController {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 lt = getHiddenValue(response.body().string());
-
                 Message message = new Message();
-                message.what = GET_LT_SUCCESS;
+                if (lt == null) {
+                    message.what = GET_LT_FAILED;
+                } else {
+                    message.what = GET_LT_SUCCESS;
+                }
                 handler.sendMessage(message);
             }
         });
@@ -122,7 +126,7 @@ public class LoginController {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 Message message = new Message();
-                if (isLoginSuccessful(response.body().string())) {
+                if (isLoginSuccess(response.body().string())) {
                     message.what = LOGIN_SUCCESS;
                 } else {
                     message.what = LOGIN_FAILED;
@@ -137,20 +141,21 @@ public class LoginController {
     */
     private String getHiddenValue(String html) {
         Document document = Jsoup.parse(html);
+        Log.i("lt_msg", document.outerHtml());
         Element element = document.select("input[type=hidden]").first();
         return element.attr("value");
     }
 
     /*
-    * 用于判断登录是否成功
-    * 若成功登录，在跳转后的页面上能找到username这个字段，返回true
+    * 用于判断登录是否失败
+    * 若登录失败，在跳转后的页面仍为登录页面，该页面上能找到username这个字段，返回true
     * 否则返回false
     */
-    private boolean isLoginSuccessful(String html) {
-        Log.d(html, "jump_page");
+    private boolean isLoginSuccess(String html) {
         Document document = Jsoup.parse(html);
+        Log.i("login_msg", document.outerHtml());
         Element element = document.getElementById("username");
-        return element != null;
+        return element == null;
     }
 
     /*

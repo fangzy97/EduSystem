@@ -23,7 +23,7 @@ public class LoginActivity extends AppCompatActivity {
     private String userName;
     private String password;
 
-    private LoadingDialogController dialogUtil = new LoadingDialogController(this);
+    private LoadingDialogController dialogController = new LoadingDialogController(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +39,18 @@ public class LoginActivity extends AppCompatActivity {
         if (isUserInfoEmpty()) {
             Toast.makeText(MyApplication.getContext(), "用户名或密码不能为空", Toast.LENGTH_SHORT).show();
         } else {
-            dialogUtil.display();
+            dialogController.display();
             LoginController loginController = new LoginController(userName, password, this);
             loginController.startLogin();
         }
     }
 
+    public void removeDialog() {
+        dialogController.remove();
+    }
+
     public void backToMainActivity() {
-        dialogUtil.remove();
+        removeDialog();
         setResult(RESULT_OK);
         finish();
     }

@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.lepetit.edu.activity.BaseActivity;
 import com.lepetit.edu.activity.LoginActivity;
+import com.lepetit.edu.activity.MainActivity;
 import com.lepetit.edu.application.MyApplication;
 import com.lepetit.edu.util.StringUtil;
 
@@ -29,6 +30,7 @@ public class LoginController extends BaseController {
     private final int GET_LT_FAILED = -1;
     private final int LOGIN_SUCCESS = 2;
     private final int LOGIN_FAILED = -2;
+    private final int LOGIN_NOT_RESPONSE = -3;
 
     private final BaseActivity activity;
     private final String userName;
@@ -61,6 +63,10 @@ public class LoginController extends BaseController {
                     return true;
                 case LOGIN_FAILED:
                     activity.displayToast("用户名或密码错误！");
+                    activity.removeDialog();
+                    return false;
+                case LOGIN_NOT_RESPONSE:
+                    activity.displayToast("请连接到校园网后重试！");
                     activity.removeDialog();
                     return false;
             }
@@ -125,7 +131,7 @@ public class LoginController extends BaseController {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 Message message = new Message();
-                message.what = LOGIN_FAILED;
+                message.what = LOGIN_NOT_RESPONSE;
                 handler.sendMessage(message);
             }
 

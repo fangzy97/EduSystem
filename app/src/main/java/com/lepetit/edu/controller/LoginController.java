@@ -8,7 +8,6 @@ import android.util.Log;
 
 import com.lepetit.edu.activity.BaseActivity;
 import com.lepetit.edu.activity.LoginActivity;
-import com.lepetit.edu.activity.MainActivity;
 import com.lepetit.edu.application.MyApplication;
 import com.lepetit.edu.util.StringUtil;
 
@@ -18,6 +17,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -51,6 +51,7 @@ public class LoginController extends BaseController {
                     loginToSystem();
                     return true;
                 case GET_LT_FAILED:
+                case LOGIN_NOT_RESPONSE:
                     activity.displayToast("请连接到校园网后重试！");
                     activity.removeDialog();
                     return false;
@@ -63,10 +64,6 @@ public class LoginController extends BaseController {
                     return true;
                 case LOGIN_FAILED:
                     activity.displayToast("用户名或密码错误！");
-                    activity.removeDialog();
-                    return false;
-                case LOGIN_NOT_RESPONSE:
-                    activity.displayToast("请连接到校园网后重试！");
                     activity.removeDialog();
                     return false;
             }
@@ -97,7 +94,7 @@ public class LoginController extends BaseController {
 
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                lt = getHiddenValue(response.body().string());
+                lt = getHiddenValue(Objects.requireNonNull(response.body()).string());
                 Message message = new Message();
                 if (lt == null) {
                     message.what = GET_LT_FAILED;
@@ -138,7 +135,7 @@ public class LoginController extends BaseController {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 Message message = new Message();
-                if (isLoginSuccess(response.body().string())) {
+                if (isLoginSuccess(Objects.requireNonNull(response.body()).string())) {
                     message.what = LOGIN_SUCCESS;
                 } else {
                     message.what = LOGIN_FAILED;

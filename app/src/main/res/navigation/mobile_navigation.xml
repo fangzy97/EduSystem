@@ -1,5 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/mobile_navigation">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@id/navigation_home">
 
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.lepetit.edu.fragment.MainFragment"
+        android:label="main_fragment"
+        tools:layout="@layout/main_fragment" />
+    <fragment
+        android:id="@+id/navigation_class_schedule"
+        android:name="com.lepetit.edu.fragment.ClassScheduleFragment"
+        android:label="class_schedule_fragment"
+        tools:layout="@layout/class_schedule_fragment" />
+    <fragment
+        android:id="@+id/navigation_exam"
+        android:name="com.lepetit.edu.fragment.ExamFragment"
+        android:label="exam_fragment"
+        tools:layout="@layout/exam_fragment" />
+    <fragment
+        android:id="@+id/navigation_grade"
+        android:name="com.lepetit.edu.fragment.GradeFragment"
+        android:label="grade_fragment"
+        tools:layout="@layout/grade_fragment" />
 </navigation>

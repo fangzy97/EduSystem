@@ -5,14 +5,14 @@
         android:title="@string/home" />
 
     <item
-        android:id="@+id/class_schedule"
+        android:id="@+id/navigation_class_schedule"
         android:title="@string/class_schedule" />
 
     <item
-        android:id="@+id/exam"
+        android:id="@+id/navigation_exam"
         android:title="@string/exam" />
 
     <item
-        android:id="@+id/grade"
+        android:id="@+id/navigation_grade"
         android:title="@string/grade" />
 </menu>

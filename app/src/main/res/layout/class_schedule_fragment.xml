@@ -16,17 +16,17 @@
             android:orientation="horizontal">
 
             <Spinner
+                android:id="@+id/class_schedule_term_spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:layout_gravity="center_vertical"
+                android:gravity="center"
                 android:spinnerMode="dropdown" />
 
             <Spinner
+                android:id="@+id/class_schedule_week_spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:layout_gravity="center_horizontal"
+                android:gravity="center"
                 android:entries="@array/week"
                 android:spinnerMode="dropdown" />
         </LinearLayout>
@@ -42,6 +42,7 @@
             android:layout_height="match_parent">
 
             <GridLayout
+                android:id="@+id/class_schedule_grid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:columnCount="8"

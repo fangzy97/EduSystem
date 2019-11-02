@@ -1,14 +1,11 @@
 package com.lepetit.edu.controller;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.lepetit.edu.activity.BaseActivity;
-import com.lepetit.edu.activity.LoginActivity;
-import com.lepetit.edu.application.MyApplication;
+import com.lepetit.edu.inter.ILogin;
+import com.lepetit.edu.inter.ILoginCallback;
 import com.lepetit.edu.util.StringUtil;
 
 import org.jetbrains.annotations.NotNull;
@@ -25,23 +22,17 @@ import okhttp3.FormBody;
 import okhttp3.Headers;
 import okhttp3.Response;
 
-public class LoginController extends BaseController {
+public class LoginController extends BaseController implements ILogin {
     private final int GET_LT_SUCCESS = 1;
     private final int GET_LT_FAILED = -1;
     private final int LOGIN_SUCCESS = 2;
     private final int LOGIN_FAILED = -2;
     private final int LOGIN_NOT_RESPONSE = -3;
 
-    private final BaseActivity activity;
-    private final String userName;
-    private final String password;
+    private ILoginCallback loginCallback;
+    private String userName;
+    private String password;
     private String lt;
-
-    public LoginController(String userName, String password, BaseActivity activity) {
-        this.userName = userName;
-        this.password = password;
-        this.activity = activity;
-    }
 
     private Handler handler = new Handler(new Handler.Callback() {
         @Override
@@ -52,32 +43,18 @@ public class LoginController extends BaseController {
                     return true;
                 case GET_LT_FAILED:
                 case LOGIN_NOT_RESPONSE:
-                    activity.displayToast("请连接到校园网后重试！");
-                    activity.removeDialog();
-                    return false;
+                    loginCallback.onLoginNotResponse();
+                    return true;
                 case LOGIN_SUCCESS:
-                    activity.removeDialog();
-                    if (activity instanceof LoginActivity) {
-                        storeUserInfo();
-                        ((LoginActivity)activity).backToMainActivity();
-                    }
+                    loginCallback.onLoginSuccess();
                     return true;
                 case LOGIN_FAILED:
-                    activity.displayToast("用户名或密码错误！");
-                    activity.removeDialog();
+                    loginCallback.onLoginFailed();
                     return false;
             }
             return false;
         }
     });
-
-    /*
-    * 开始执行登录操作
-    */
-    public void startLogin() {
-        super.newOKHttpUtilInstance();
-        getLtValue();
-    }
 
     /*
     * 登录提交的表单中有一个随机生成的lt
@@ -87,7 +64,7 @@ public class LoginController extends BaseController {
         super.getOKHttpUtil().getAsync(StringUtil.loginUrl, new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Message message = new Message();
+                Message message = Message.obtain();
                 message.what = GET_LT_FAILED;
                 handler.sendMessage(message);
             }
@@ -95,7 +72,7 @@ public class LoginController extends BaseController {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 lt = getHiddenValue(Objects.requireNonNull(response.body()).string());
-                Message message = new Message();
+                Message message = Message.obtain();
                 if (lt == null) {
                     message.what = GET_LT_FAILED;
                 } else {
@@ -168,13 +145,14 @@ public class LoginController extends BaseController {
     }
 
     /*
-    * 存储用户名和密码到本地
+    * 实现ILogin接口，执行登录操作
     */
-    private void storeUserInfo() {
-        SharedPreferences preferences = MyApplication.getContext().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString("UserName", userName);
-        editor.putString("Password", password);
-        editor.apply();
+    @Override
+    public void startLogin(@NotNull String username, @NotNull String password, @NotNull ILoginCallback loginCallback) {
+        super.newOKHttpUtilInstance();
+        this.userName = username;
+        this.password = password;
+        this.loginCallback = loginCallback;
+        getLtValue();
     }
 }

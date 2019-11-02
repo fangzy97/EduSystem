@@ -9,11 +9,12 @@ import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.lepetit.edu.R;
 import com.lepetit.edu.application.MyApplication;
 import com.lepetit.edu.controller.LoginController;
+import com.lepetit.edu.inter.ILogin;
+import com.lepetit.edu.inter.ILoginCallback;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity {
@@ -28,6 +29,9 @@ public class MainActivity extends BaseActivity {
         checkLoginStatus();
     }
 
+    /*
+    * 初始化底部导航栏
+    */
     private void initializeNavigation() {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED);
@@ -46,8 +50,23 @@ public class MainActivity extends BaseActivity {
         String password = preferences.getString("Password", "");
 
         if (isHaveLoginInfo(userName, password)) {
-            LoginController loginController = new LoginController(userName, password, this);
-            loginController.startLogin();
+            ILogin login = new LoginController();
+            login.startLogin(userName, password, new ILoginCallback() {
+                @Override
+                public void onLoginSuccess() {
+                    MyApplication.setLoginStatus(true);
+                }
+
+                @Override
+                public void onLoginFailed() {
+                    MainActivity.super.displayToast("用户名或密码错误！");
+                }
+
+                @Override
+                public void onLoginNotResponse() {
+                    MainActivity.super.displayToast("请连接到校园网后重试！");
+                }
+            });
         } else {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivityForResult(intent, LOGIN_REQUEST);

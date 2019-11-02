@@ -1,5 +1,7 @@
 package com.lepetit.edu.activity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -7,6 +9,8 @@ import android.widget.Toast;
 import com.lepetit.edu.R;
 import com.lepetit.edu.application.MyApplication;
 import com.lepetit.edu.controller.LoginController;
+import com.lepetit.edu.inter.ILogin;
+import com.lepetit.edu.inter.ILoginCallback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,9 +39,28 @@ public class LoginActivity extends BaseActivity {
         if (isUserInfoEmpty()) {
             Toast.makeText(MyApplication.getContext(), "用户名或密码不能为空", Toast.LENGTH_SHORT).show();
         } else {
-            displayDialog();
-            LoginController loginController = new LoginController(userName, password, this);
-            loginController.startLogin();
+            super.displayDialog();
+            ILogin login = new LoginController();
+            login.startLogin(userName, password, new ILoginCallback() {
+                @Override
+                public void onLoginSuccess() {
+                    storeUserInfo();
+                    LoginActivity.super.removeDialog();
+                    backToMainActivity();
+                }
+
+                @Override
+                public void onLoginFailed() {
+                    LoginActivity.super.removeDialog();
+                    LoginActivity.super.displayToast("用户名或密码错误！");
+                }
+
+                @Override
+                public void onLoginNotResponse() {
+                    LoginActivity.super.removeDialog();
+                    LoginActivity.super.displayToast("请连接到校园网后重试！");
+                }
+            });
         }
     }
 
@@ -49,5 +72,16 @@ public class LoginActivity extends BaseActivity {
 
     private boolean isUserInfoEmpty() {
         return userName.equals("") || password.equals("");
+    }
+
+    /*
+     * 存储用户名和密码到本地
+     */
+    private void storeUserInfo() {
+        SharedPreferences preferences = getApplicationContext().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("UserName", userName);
+        editor.putString("Password", password);
+        editor.apply();
     }
 }

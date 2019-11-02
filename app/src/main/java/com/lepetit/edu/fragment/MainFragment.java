@@ -65,6 +65,7 @@ public class MainFragment extends Fragment {
     * 若没有则显示"最近没有考试"
     * */
     private void getMainExamInfo() {
+        mainExamInfoList.clear();
         MainExamInfo info = new MainExamInfo("最近没有考试", "", "");
         mainExamInfoList.add(info);
     }

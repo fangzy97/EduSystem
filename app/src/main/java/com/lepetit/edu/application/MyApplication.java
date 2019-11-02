@@ -3,9 +3,6 @@ package com.lepetit.edu.application;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
-import android.os.Handler;
-import android.os.Message;
-import android.widget.Toast;
 
 public class MyApplication extends Application {
     @SuppressLint("StaticFieldLeak")

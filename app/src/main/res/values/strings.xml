@@ -8,4 +8,5 @@
     <string name="class_schedule">课程表</string>
     <string name="exam">考试</string>
     <string name="grade">成绩</string>
+    <string name="main_exam_recently">近期考试</string>
 </resources>

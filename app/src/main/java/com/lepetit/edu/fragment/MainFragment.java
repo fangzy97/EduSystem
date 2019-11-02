@@ -50,8 +50,7 @@ public class MainFragment extends Fragment {
     * 该函数用于设置主页顶部的时间信息
     */
     private void setDateInfoText() {
-        DateUtil dateUtil = new DateUtil();
-        dateUtil.getDate((year, month, day, week) -> {
+        DateUtil.getInstance().getDate((year, month, day, week) -> {
             String monthAndDay = month + "月" + day + "日";
             monthAndDayText.setText(monthAndDay);
 

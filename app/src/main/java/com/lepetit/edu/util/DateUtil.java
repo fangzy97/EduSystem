@@ -1,6 +1,6 @@
 package com.lepetit.edu.util;
 
-import com.lepetit.edu.inter.IGetDateCallback;
+import com.lepetit.edu.callback.GetDateCallback;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,7 +29,7 @@ public class DateUtil {
 
     /*
     * 获取年、月、日、星期*/
-    public void getDate(IGetDateCallback getDateCallback) {
+    public void getDate(GetDateCallback getDateCallback) {
         getDateCallback.onGetDate(year, month, day, weekToString(week));
     }
 

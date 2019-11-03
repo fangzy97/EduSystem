@@ -8,9 +8,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import com.lepetit.edu.R;
 import com.lepetit.edu.application.MyApplication;
+import com.lepetit.edu.callback.LoginCallback;
 import com.lepetit.edu.controller.LoginController;
 import com.lepetit.edu.inter.ILogin;
-import com.lepetit.edu.inter.ILoginCallback;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -51,7 +51,7 @@ public class MainActivity extends BaseActivity {
 
         if (isHaveLoginInfo(userName, password)) {
             ILogin login = new LoginController();
-            login.startLogin(userName, password, new ILoginCallback() {
+            login.startLogin(userName, password, new LoginCallback() {
                 @Override
                 public void onLoginSuccess() {
                     MyApplication.setLoginStatus(true);

@@ -8,9 +8,9 @@ import android.widget.Toast;
 
 import com.lepetit.edu.R;
 import com.lepetit.edu.application.MyApplication;
+import com.lepetit.edu.callback.LoginCallback;
 import com.lepetit.edu.controller.LoginController;
 import com.lepetit.edu.inter.ILogin;
-import com.lepetit.edu.inter.ILoginCallback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,7 +41,7 @@ public class LoginActivity extends BaseActivity {
         } else {
             super.displayDialog();
             ILogin login = new LoginController();
-            login.startLogin(userName, password, new ILoginCallback() {
+            login.startLogin(userName, password, new LoginCallback() {
                 @Override
                 public void onLoginSuccess() {
                     storeUserInfo();

@@ -4,15 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.GridLayout;
 import android.widget.Spinner;
 
 import com.lepetit.edu.R;
-import com.lepetit.edu.application.MyApplication;
-import com.lepetit.edu.util.DateUtil;
-
-import java.util.List;
+import com.lepetit.edu.controller.ClassScheduleController;
+import com.lepetit.edu.inter.IClassSchedule;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +29,8 @@ public class ClassScheduleFragment extends Fragment {
     @BindView(R.id.class_schedule_swipe)
     SwipeRefreshLayout swipeRefreshLayout;
 
+    IClassSchedule classSchedule = new ClassScheduleController();
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.class_schedule_fragment, container, false);
@@ -45,9 +44,7 @@ public class ClassScheduleFragment extends Fragment {
     * 设置当前的学期
     */
     private void setTermSpinner() {
-        List<String> termList = DateUtil.getInstance().getTermList();
-        ArrayAdapter<String> termSpinnerAdapter = new ArrayAdapter<>(MyApplication.getContext(), android.R.layout.simple_list_item_1, termList);
-        termSpinner.setAdapter(termSpinnerAdapter);
+        classSchedule.setTermSpinner(adapter -> termSpinner.setAdapter(adapter));
     }
 
     /*

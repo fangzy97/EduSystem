@@ -4,8 +4,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.lepetit.edu.callback.LoginCallback;
 import com.lepetit.edu.inter.ILogin;
-import com.lepetit.edu.inter.ILoginCallback;
 import com.lepetit.edu.util.StringUtil;
 
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +29,7 @@ public class LoginController extends BaseController implements ILogin {
     private final int LOGIN_FAILED = -2;
     private final int LOGIN_NOT_RESPONSE = -3;
 
-    private ILoginCallback loginCallback;
+    private LoginCallback loginCallback;
     private String userName;
     private String password;
     private String lt;
@@ -148,7 +148,7 @@ public class LoginController extends BaseController implements ILogin {
     * 实现ILogin接口，执行登录操作
     */
     @Override
-    public void startLogin(@NotNull String username, @NotNull String password, @NotNull ILoginCallback loginCallback) {
+    public void startLogin(@NotNull String username, @NotNull String password, @NotNull LoginCallback loginCallback) {
         super.newOKHttpUtilInstance();
         this.userName = username;
         this.password = password;

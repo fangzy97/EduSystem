@@ -1,6 +1,6 @@
-package com.lepetit.edu.inter;
+package com.lepetit.edu.callback;
 
-public interface ILoginCallback {
+public interface LoginCallback {
     void onLoginSuccess();
     void onLoginFailed();
     void onLoginNotResponse();

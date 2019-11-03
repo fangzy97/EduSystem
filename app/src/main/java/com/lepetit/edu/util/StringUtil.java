@@ -7,4 +7,5 @@ public class StringUtil {
     public final static String execution = "e1s1";
     public final static String _eventId = "submit";
     public final static String rmShown = "1";
+    public final static String weekUrl = "http://jwms.bit.edu.cn/jsxsd/jxzl/jxzl_query?Ves632DSdyV=NEW_XSD_WDZM";
 }

@@ -29,7 +29,7 @@ public class ClassScheduleFragment extends Fragment {
     @BindView(R.id.class_schedule_swipe)
     SwipeRefreshLayout swipeRefreshLayout;
 
-    IClassSchedule classSchedule = new ClassScheduleController();
+    private IClassSchedule classSchedule = new ClassScheduleController();
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -44,13 +44,17 @@ public class ClassScheduleFragment extends Fragment {
     * 设置当前的学期
     */
     private void setTermSpinner() {
-        classSchedule.setTermSpinner(adapter -> termSpinner.setAdapter(adapter));
+        classSchedule.setTermSpinner((adapter, index) -> {
+            termSpinner.setAdapter(adapter);
+            termSpinner.setSelection(index);
+        });
     }
 
     /*
     * 设置当前周
     */
     private void setWeekSpinner() {
-
+        int index = classSchedule.setWeekSpinner();
+        weekSpinner.setSelection(index);
     }
 }

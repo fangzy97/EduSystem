@@ -52,6 +52,14 @@ public class DateUtil {
         return termList;
     }
 
+    public String getCurrentTerm() {
+        if (month > 1 && month < 8) {
+            return (year - 1) + "-" + year + "-2";
+        } else {
+            return year + "-" + (year + 1) + "-1";
+        }
+    }
+
     /*
     * 将星期信息转换为中文表达
     */

@@ -39,37 +39,45 @@ public class MainActivity extends BaseActivity {
         NavigationUI.setupWithNavController(navView, navController);
     }
 
-    /*
-     * 检查本地是否已经有用户名和密码信息
-     * 若存在则执行登录操作
-     * 否则跳转到登录界面
-     */
+    /**
+     * 提交用户名和密码登录到教务处
+     * @param username 用户名
+     * @param password 密码
+     * */
+    public void loginToJWC(String username, String password) {
+        ILogin login = new LoginController();
+        login.startLogin(username, password, new LoginCallback() {
+            @Override
+            public void onLoginSuccess() {
+                MyApplication.setLoginStatus(true);
+            }
+
+            @Override
+            public void onLoginFailed() {
+                MainActivity.super.displayToast("用户名或密码错误！");
+            }
+
+            @Override
+            public void onLoginNotResponse() {
+                MainActivity.super.displayToast("请连接到校园网后重试！");
+            }
+        });
+    }
+
+    /**
+     * 用于检查本地是否有可用于登录的信息
+     * 若没有则跳转到登录界面
+     * */
     private void checkLoginStatus() {
         SharedPreferences preferences = MyApplication.getContext().getSharedPreferences("UserInfo", MODE_PRIVATE);
         String userName = preferences.getString("UserName", "");
         String password = preferences.getString("Password", "");
 
-        if (isHaveLoginInfo(userName, password)) {
-            ILogin login = new LoginController();
-            login.startLogin(userName, password, new LoginCallback() {
-                @Override
-                public void onLoginSuccess() {
-                    MyApplication.setLoginStatus(true);
-                }
-
-                @Override
-                public void onLoginFailed() {
-                    MainActivity.super.displayToast("用户名或密码错误！");
-                }
-
-                @Override
-                public void onLoginNotResponse() {
-                    MainActivity.super.displayToast("请连接到校园网后重试！");
-                }
-            });
-        } else {
+        if (!isHaveLoginInfo(userName, password)) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivityForResult(intent, LOGIN_REQUEST);
+        } else {
+            loginToJWC(userName, password);
         }
     }
 

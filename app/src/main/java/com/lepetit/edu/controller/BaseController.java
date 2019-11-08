@@ -2,14 +2,14 @@ package com.lepetit.edu.controller;
 
 import com.lepetit.edu.util.OKHttpUtil;
 
-public abstract class BaseController {
-    private OKHttpUtil okHttpUtil;
+abstract class BaseController {
+    private static OKHttpUtil okHttpUtil;
 
-    public void newOKHttpUtilInstance() {
+    void newOKHttpUtilInstance() {
         okHttpUtil = new OKHttpUtil();
     }
 
-    public OKHttpUtil getOKHttpUtil() {
+    OKHttpUtil getOKHttpUtil() {
         return okHttpUtil;
     }
 }

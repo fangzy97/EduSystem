@@ -12,21 +12,21 @@ public abstract class BaseActivity extends AppCompatActivity {
     /*
     * 用于显示Toast提示框
     */
-    protected void displayToast(String text) {
+    public void displayToast(String text) {
         Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT).show();
     }
 
     /*
     * 用于显示等待提示框
     */
-    protected void displayDialog() {
+    public void displayDialog() {
         getSupportFragmentManager().beginTransaction().add(dialogFragment, "Loading").commit();
     }
 
     /*
     * 用于移除等待提示框
     */
-    protected void removeDialog() {
+    public void removeDialog() {
         getSupportFragmentManager().beginTransaction().remove(dialogFragment).commit();
     }
 }

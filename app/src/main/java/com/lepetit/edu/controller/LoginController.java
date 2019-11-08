@@ -148,7 +148,7 @@ public class LoginController extends BaseController implements ILogin {
     * 实现ILogin接口，执行登录操作
     */
     @Override
-    public void startLogin(@NotNull String username, @NotNull String password, @NotNull LoginCallback loginCallback) {
+    public void startLogin(String username, String password, LoginCallback loginCallback) {
         super.newOKHttpUtilInstance();
         this.userName = username;
         this.password = password;

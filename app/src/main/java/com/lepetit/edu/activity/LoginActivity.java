@@ -78,7 +78,7 @@ public class LoginActivity extends BaseActivity {
      * 存储用户名和密码到本地
      */
     private void storeUserInfo() {
-        SharedPreferences preferences = getApplicationContext().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+        SharedPreferences preferences = MyApplication.getContext().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("UserName", userName);
         editor.putString("Password", password);

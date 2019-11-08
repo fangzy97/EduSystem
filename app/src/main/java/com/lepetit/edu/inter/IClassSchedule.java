@@ -1,8 +1,9 @@
 package com.lepetit.edu.inter;
 
-import android.widget.ArrayAdapter;
-
 import com.lepetit.edu.callback.SetTermSpinnerCallback;
+import com.lepetit.edu.callback.SetWeekSpinnerCallback;
+
+import java.text.ParseException;
 
 public interface IClassSchedule {
     /**
@@ -13,9 +14,8 @@ public interface IClassSchedule {
 
     /**
      * 设置周数下拉框默认显示的内容（即当前周数）
-     * @return 当前周数的index
      * */
-    int setWeekSpinner();
+    void setWeekSpinner(SetWeekSpinnerCallback callback) throws ParseException;
 
     /**
     * 将课程表显示到屏幕上

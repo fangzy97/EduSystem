@@ -12,6 +12,9 @@ public class MyApplication extends Application {
 
     private static boolean loginStatus;
 
+    public static int LOCAL = 1;
+    public static int ONLINE = 2;
+
     @Override
     public void onCreate() {
         super.onCreate();
